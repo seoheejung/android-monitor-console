@@ -17,20 +17,29 @@ def get_address(lat, lon):
                 "zoom": 10
             },
             headers={
-                "User-Agent": "PokeDesk"
+                "User-Agent": "PokeDesk/1.0"
             },
-            timeout=3
+            timeout=5
         )
 
         response.raise_for_status()
-
         data = response.json()
 
         address = data.get("address", {})
 
-        # 도시 / 구 단위 추출
-        city = address.get("city") or address.get("state")
-        district = address.get("county") or address.get("suburb")
+        city = (
+            address.get("city")
+            or address.get("municipality")
+            or address.get("province")
+            or address.get("state")
+        )
+
+        district = (
+            address.get("city_district")
+            or address.get("borough")
+            or address.get("county")
+            or address.get("suburb")
+        )
 
         if city and district:
             return f"{city} {district}"
@@ -40,5 +49,6 @@ def get_address(lat, lon):
 
         return "위치 정보 없음"
 
-    except Exception:
+    except Exception as e:
+        print("[get_address] 실패:", e)
         return "위치 정보 없음"

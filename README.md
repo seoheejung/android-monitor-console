@@ -285,6 +285,7 @@ pokedesk/
 ├── app/
 │   ├── api/
 │   ├── core/
+│   ├── constants/
 │   ├── services/
 │   ├── repositories/
 │   ├── models/

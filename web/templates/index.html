@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeDesk</title>
 
-    <!-- CSS 연결 -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
 <div class="pokedex">
 
-    <!-- 상단 헤더 -->
     <div class="dex-header">
         <div class="dex-lamp-group">
             <div class="lamp lamp-blue"></div>
@@ -23,12 +21,16 @@
         <div class="dex-title">POKEDESK</div>
     </div>
 
-    <!-- 상단 상태 패널 -->
     <div class="top-panel">
         <div class="top-left">
             <div class="screen-frame">
                 <div class="screen-inner">
                     <img id="pokemon-img" src="" alt="pokemon">
+                    <div id="pokemon-placeholder">
+                        <div class="placeholder-box">
+                            <div class="placeholder-text">NO SIGNAL</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,13 +42,14 @@
             </div>
 
             <div class="message-box">
-                <span class="label">메세지</span>
+                <span class="label">상태 메세지</span>
                 <div id="message"></div>
+                <span class="label">환경 메세지</span>
+                <div id="environment-message"></div>
             </div>
         </div>
     </div>
 
-    <!-- 중간 정보 패널 -->
     <div class="middle-panel">
         <div class="info-grid">
             <div class="info-box">
@@ -91,7 +94,6 @@
         </div>
     </div>
 
-    <!-- 하단 로그 패널 -->
     <div class="bottom-panel">
         <div class="log-header">EVENT LOG</div>
         <ul id="event-log"></ul>
@@ -99,7 +101,6 @@
 
 </div>
 
-<!-- JS 연결 -->
 <script src="/static/js/app.js"></script>
 
 </body>
