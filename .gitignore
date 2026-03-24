@@ -1,0 +1,15 @@
+web/.env
+**/.env
+.env.*
+
+# Python 캐시
+__pycache__/
+*.py[cod]
+
+# 가상환경
+venv/
+
+# 에디터 설정
+.vscode/
+.idea/
+
