@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify
 from datetime import datetime
 from app.services.battery import get_battery_status
+from app.services.weather import get_weather
+from app.services.air_quality import get_air_quality
 
 app = Flask(
     __name__,
@@ -117,33 +119,45 @@ def calculate_state(battery: int, charging: bool, idle_minutes: int) -> str:
     return "idle"
 
 
-def build_message(state: str, battery: int, idle_minutes: int) -> str:
+def build_message(state, battery, idle_minutes, weather, air_quality) -> str:
     """
-    상태별 말풍선 메시지 생성
+    상태 + 날씨 + 공기질 기반 메시지 생성
     """
 
-    # 회복 상태 메시지
-    if state == "healing":
-        return "충전 중이야. 회복 상태로 전환할게."
+    # 공기질이 매우 안 좋으면 우선 경고
+    if air_quality.get("us_aqi") is not None and air_quality["us_aqi"] > 100:
+        return f"공기 상태가 {air_quality['air_text']}이야. 실내 대기를 권장할게."
 
-    # 경고 상태 메시지
+    # 배터리 경고 상태
     if state == "warning":
         return f"배터리가 {battery}%야. 경고 상태야."
 
-    # 수면 상태 메시지
+    # 충전 상태
+    if state == "healing":
+        return "충전 중이야. 회복 상태야."
+
+    # 수면 상태
     if state == "sleep":
-        return f"{idle_minutes}분 동안 입력이 없어. 잠든 상태로 전환할게."
+        return f"{idle_minutes}분 동안 입력이 없어. 잠든 상태야."
 
-    # 집중 상태 메시지
+    # 집중 상태
     if state == "focus":
-        return "조용한 상태가 유지되고 있어. 집중 상태야."
+        return "집중 상태 유지 중이야."
 
-    # 이벤트 상태 메시지
-    if state == "event":
-        return "새로운 이벤트가 있어. 브리핑을 확인해."
+    # 비/눈 같은 날씨 반영
+    weather_text = weather.get("weather_text")
+
+    if weather_text in ["약한 비", "비", "강한 비", "약한 소나기", "소나기", "강한 소나기"]:
+        return "비가 오고 있어. 물 타입 분위기가 강해."
+
+    if weather_text in ["약한 눈", "눈", "강한 눈"]:
+        return "눈이 내리고 있어. 조용하고 차가운 분위기야."
+
+    if weather_text in ["흐림", "부분적으로 흐림", "안개", "서리 안개"]:
+        return f"지금 날씨는 {weather_text}이야. 차분하게 대기 중이야."
 
     # 기본 메시지
-    return "현재는 대기 상태야."
+    return "대기 상태야."
 
 
 def update_event_logs(state: str, battery: int, charging: bool) -> None:
@@ -235,10 +249,13 @@ def update_activity():
 def status():
     """
     상태 API
-    - 배터리/충전 상태는 실제 값 사용
-    - 유휴 시간은 마지막 활동 시각 기준 계산
-    - 이벤트 로그는 메모리 기반 누적 관리
     """
+
+    # 현재 날씨 조회
+    weather = get_weather()
+
+    # 현재 공기질 조회
+    air_quality = get_air_quality()
 
     # 배터리 상태 조회
     battery, charging = get_battery_status()
@@ -253,7 +270,7 @@ def status():
     update_event_logs(state, battery, charging)
 
     # 메시지 생성
-    message = build_message(state, battery, idle_minutes)
+    message = build_message(state, battery, idle_minutes, weather, air_quality)
 
     # 포켓몬 선택
     pokemon = STATE_POKEMON.get(state, STATE_POKEMON["idle"])
@@ -267,7 +284,9 @@ def status():
         "idle_minutes": idle_minutes,
         "time": datetime.now().strftime("%H:%M:%S"),
         "pokemon": pokemon,
-        "events": EVENT_LOGS
+        "events": EVENT_LOGS,
+        "weather": weather,
+        "air_quality": air_quality
     })
 
 # 서버 실행

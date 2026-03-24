@@ -33,6 +33,16 @@ async function fetchStatus() {
     // 유휴 시간 표시
     document.getElementById("idle-minutes").innerText = "IDLE: " + data.idle_minutes + " min";
 
+    // 현재 날씨 표시
+    document.getElementById("weather").innerText =
+        "WEATHER: " + data.weather.weather_text +
+        (data.weather.temperature !== null ? " / " + data.weather.temperature + "°C" : "");
+
+    // 현재 공기질 표시
+    document.getElementById("air-quality").innerText =
+        "AIR: " + data.air_quality.air_text +
+        (data.air_quality.us_aqi !== null ? " / AQI " + data.air_quality.us_aqi : "");
+
     // 이벤트 로그 DOM 선택
     const logList = document.getElementById("event-log");
 
