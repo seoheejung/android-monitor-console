@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from datetime import datetime
+from app.services.battery import get_battery_status
 import psutil
 
 app = FastAPI()

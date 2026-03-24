@@ -327,7 +327,6 @@ venv\Scripts\activate
 ```
 pip install -r requirements.txt
 ```
-- requirements.txt: FastAPI, Uvicorn, Jinja2, Requests, psutil 등 실행에 필요한 패키지 목록
 
 #### 4. 설치 확인
 
@@ -349,77 +348,57 @@ http://127.0.0.1:8000
 
 ### [2단계] Termux 배포 및 실행
 
-#### 1. Termux 설치
-- F-Droid 또는 GitHub 릴리스 기준 Termux 설치
-- Play Store 구버전은 사용하지 않음
-
-#### 2. Termux 패키지 업데이트
+#### 1. Termux 기본 설정
 ```bash
 pkg update && pkg upgrade -y
-```
-
-#### 3. Python / Git 설치
-```bash
-pkg install python git -y
-```
-#### 4. 프로젝트 가져오기
-
-방법 A. Git clone
-```
-git clone <레포지토리_URL>
-cd pokedesk
-```
-
-방법 B. PC에서 복사
-
-- 프로젝트 폴더를 샤오미 14T 내부 저장소로 복사
-- Termux에서 해당 경로로 이동
-
-```
-cd /storage/emulated/0/pokedesk
-```
-
-#### 5. 저장소 접근 권한 허용
-
-```
+pkg install python git termux-api -y
 termux-setup-storage
 ```
-- 최초 1회 실행
-- 내부 저장소 접근 권한 승인 필요
-
-#### 6. 패키지 설치
-
-```
-pip install-r requirements.txt
+#### 2. 프로젝트 복사
+```bash
+git clone https://github.com/seoheejung/pokedesk.git ~/pokedesk
+cd ~/pokedesk
 ```
 
-#### 7. FastAPI 서버 실행
-
+#### 3. 실행 권한 부여
+```bash
+chmod +x termux_setup.sh
+chmod +x termux_start.sh
 ```
-uvicorn app.main:app--host0.0.0.0--port8000
-```
 
-#### 8. 브라우저 접속
-
+#### 4. 의존성 설치
+```bash
+pip install -r requirements-termux.txt
 ```
+| 항목                      | 내용                     |
+| ----------------------- | ---------------------- |
+| requirements.txt        | 로컬 개발용 (psutil 포함)     |
+| requirements-termux.txt | Termux 실행용 (psutil 제외) |
+| termux-api              | pkg로 설치                |
+
+#### 5. 서버 실행
+
+```bash
+./termux_start.sh
+```
+#### 6. 브라우저 접속
+
+```bash
 http://127.0.0.1:8000
 ```
 
-- 같은 폰 브라우저에서 접속하면 됨
-- Chrome 또는 기본 브라우저 사용 가능
-
-#### 9. 상시 패널처럼 사용하는 방법
+#### 7. 상시 패널처럼 사용하는 방법
 
 - 브라우저에서 PokeDesk 접속
 - 전체화면 또는 홈 화면 추가 사용
 - 충전기에 연결한 상태로 책상 위 고정
 - 화면 꺼짐 시간은 Android 설정에서 별도 조정
 
-#### 10. 종료 방법
+#### 8. 종료 방법
 
 Termux 실행 화면에서:
 
-```
+```bash
 Ctrl+ C
 ```
 
@@ -438,15 +417,23 @@ uvicorn app.main:app--host0.0.0.0--port8000
 http://127.0.0.1:8000
 ```
 
-#### Termux 배포 시 주의사항
-| 항목     | 내용                            |
-| ------ | ----------------------------- |
-| 실행 위치  | 반드시 프로젝트 루트에서 실행    |
-| 포트     | 기본 8000 사용              |
-| 종료 방식  | `Ctrl + C`                    |
-| 저장소 권한 | `termux-setup-storage` 1회 필요  |
-| 배포 구조  | PC에서 개발 후 폰으로 복사 또는 git clone |
-| 실행 방식  | Termux에서 FastAPI 실행 후 브라우저 접속 |
+
+#### ⚠️ 환경별 배터리 처리 방식
+| 환경              | 방식                    |
+| --------------- | --------------------- |
+| Windows / Linux | psutil                |
+| Termux          | termux-battery-status |
+> psutil은 Termux에서 사용 불가
+
+#### ⚠️ 주요 주의사항
+| 항목         | 내용          |
+| ---------- | ----------- |
+| 실행 위치      | 반드시 프로젝트 루트 |
+| 포트         | 8000        |
+| 네트워크       | 동일 Wi-Fi 필요 |
+| psutil     | Termux에서 제거 |
+| termux-api | pkg로 설치     |
+
 
 ---
 
