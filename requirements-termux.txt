@@ -1,5 +1,2 @@
-fastapi
-uvicorn
-jinja2
+flask
 requests
-python-multipart

@@ -7,8 +7,8 @@ echo "[1] 패키지 업데이트"
 pkg update -y
 pkg upgrade -y
 
-echo "[2] Python / Git 설치"
-pkg install python git -y
+echo "[2] Python / Git / Termux API 설치"
+pkg install python git termux-api -y
 
 echo "[3] 저장소 권한 연결"
 termux-setup-storage
@@ -18,7 +18,7 @@ PROJECT_DIR="$HOME/pokedesk"
 
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "프로젝트 폴더가 없습니다: $PROJECT_DIR"
-    echo "먼저 git clone 하거나 폴더를 복사해 주세요."
+    echo "git clone 또는 파일 복사 후 다시 실행하세요."
     exit 1
 fi
 
@@ -36,8 +36,8 @@ source venv/bin/activate
 echo "[8] pip 업그레이드"
 pip install --upgrade pip
 
-echo "[9] requirements-termux 설치"
+echo "[9] Termux 의존성 설치"
 pip install -r requirements-termux.txt
 
 echo "[완료] Termux 초기 설정 완료"
-echo "다음부터는 ./termux_start.sh 로 실행하면 됩니다."
+echo "다음 실행: ./termux_start.sh"
