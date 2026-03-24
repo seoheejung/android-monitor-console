@@ -20,4 +20,4 @@ echo "[4] 서버 실행"
 echo "접속: http://127.0.0.1:8000"
 echo "종료: Ctrl + C"
 
-python app/main.py
+python -m app.main
