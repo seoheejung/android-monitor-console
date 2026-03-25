@@ -10,9 +10,9 @@ async function fetchStatus() {
     document.getElementById("state-icon").innerText = data.profile.icon;
     document.getElementById("state-label").innerText = data.profile.label;
     document.getElementById("console-name").innerText = "ANDROID MONITOR CONSOLE";
-    
+
     // 상태
-    document.getElementById("state").innerText = data.state;
+    document.getElementById("state").innerText = data.profile.label;
 
     // 상태 메시지
     document.getElementById("message").innerText = data.message;

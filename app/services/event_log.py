@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import app.core.state_store as store
+from app.constants.state_profile import STATE_PROFILE
 
 def add_event(event_type: str, message: str) -> None:
     """
@@ -40,15 +41,22 @@ def update_event_logs(state: str, battery: int, charging: bool) -> None:
     - 배터리 부족 진입 시 로그 추가
     """
 
+    current_label = STATE_PROFILE.get(state, STATE_PROFILE["idle"])["label"]
+
     # 마지막 상태가 없으면 앱 시작 로그 추가
     if store.LAST_STATE is None:
-        add_event("system", "PokeDesk 시작")
-        add_event("state", f"init → {state}")
+        add_event("system", "Android Monitor Console 시작")
+        add_event("state", f"시스템 상태 초기화: {current_label}")
         store.LAST_STATE = state
 
     # 상태가 바뀌었으면 상태 변경 로그 추가
     if store.LAST_STATE != state:
-        add_event("state", f"{store.LAST_STATE} → {state}")
+        previous_label = STATE_PROFILE.get(
+            store.LAST_STATE,
+            STATE_PROFILE["idle"]
+        )["label"]
+
+        add_event("state", f"상태 변경: {previous_label} → {current_label}")
         store.LAST_STATE = state
 
     # 마지막 충전 상태가 없으면 현재 값으로 초기화

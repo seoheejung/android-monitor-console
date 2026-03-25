@@ -12,6 +12,16 @@
     --shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
 }
 
+.state-warning { color: #f59e0b; }
+.state-healing { color: #4ade80; }
+.state-sleep { color: #64748b; }
+.state-focus { color: #60a5fa; }
+
+.aqi-bad {
+    color: #f97316;
+    font-weight: 700;
+}
+
 * {
     box-sizing: border-box;
 }
