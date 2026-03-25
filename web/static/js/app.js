@@ -6,10 +6,17 @@ async function fetchStatus() {
     const res = await fetch("/api/status");
     const data = await res.json();
 
-    // 콘솔
-    document.getElementById("state-icon").innerText = data.profile.icon;
+    // 상태 아이콘
+    const iconEl = document.getElementById("state-icon");
+    iconEl.innerText = data.profile.icon;
+    iconEl.className = "state-icon";
+    iconEl.classList.add(data.state);
+
+    // 상태 라벨
     document.getElementById("state-label").innerText = data.profile.label;
-    document.getElementById("console-name").innerText = "ANDROID MONITOR CONSOLE";
+
+    // 시스템 정보
+    document.getElementById("os-info").innerText = data.os;
 
     // 상태 텍스트
     const stateEl = document.getElementById("state");
@@ -25,11 +32,6 @@ async function fetchStatus() {
         "state-event"
     );
     stateEl.classList.add(`state-${data.state}`);
-
-    // 상태 아이콘 클래스 적용
-    const iconEl = document.getElementById("state-icon");
-    iconEl.className = "state-icon";
-    iconEl.classList.add(data.state);
 
     // 상태 메시지
     document.getElementById("message").innerText = data.message;

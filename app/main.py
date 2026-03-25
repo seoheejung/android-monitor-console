@@ -5,6 +5,7 @@ from app.services.location_termux import get_location_termux
 from app.services.geocoding import get_address
 from threading import Thread
 
+import platform
 import app.core.state_store as store
 from app.services.environment import get_cached_env
 from app.services.state_logic import build_state_message, build_environment_message
@@ -112,6 +113,7 @@ def status():
         "time": datetime.now().strftime("%H:%M:%S"),
         "profile": profile,
         "events": store.EVENT_LOGS,
+        "os": f"{platform.system()} ({platform.release()})",
     })
 
 @app.route("/api/environment", methods=["GET"])
