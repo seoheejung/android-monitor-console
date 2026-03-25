@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import platform
 import app.core.state_store as store
 from app.constants.state_profile import STATE_PROFILE
 
@@ -41,7 +41,7 @@ def _init_event_state(state: str, charging: bool, battery_warning: bool) -> None
     최초 1회 상태 초기화
     """
     if store.LAST_STATE is None:
-        add_event("system", "Android Monitor Console 시작")
+        add_event("system", f"{platform.system()} Monitor Console 시작")
         add_event("state", f"시스템 상태 초기화: {_get_state_label(state)}")
         store.LAST_STATE = state
 
