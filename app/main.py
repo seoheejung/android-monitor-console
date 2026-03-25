@@ -8,7 +8,7 @@ from threading import Thread
 import platform
 import app.core.state_store as store
 from app.services.environment import get_cached_env
-from app.services.state_logic import build_state_message, build_environment_message
+from app.services.state_logic import build_state_message
 from app.services.event_log import get_idle_minutes, update_event_logs
 from app.constants.state_profile import STATE_PROFILE
 from app.services.network import get_network_detail
@@ -129,7 +129,6 @@ def environment():
             print("[environment] init_location 실패:", e)
 
     weather, air_quality = get_cached_env()
-    environment_message = build_environment_message(weather, air_quality)
 
     network = get_network_detail()
 
@@ -137,7 +136,6 @@ def environment():
         "weather": weather,
         "air_quality": air_quality,
         "location": store.DEVICE_LOCATION,
-        "message": environment_message,
         "network": network,
     })
 

@@ -48,9 +48,6 @@ async function fetchStatus() {
     // 배터리
     document.getElementById("battery").innerText = data.battery + "%";
 
-    // 충전 상태
-    document.getElementById("charging").innerText = data.charging ? "충전 중" : "미충전";
-
     // 유휴 시간
     document.getElementById("idle-minutes").innerText = data.idle_minutes + "분";
 
@@ -91,22 +88,17 @@ async function fetchEnvironment() {
     // 위치
     document.getElementById("location").innerText = data.location;
 
-    // 환경 메시지
-    const environmentMessageEl = document.getElementById("environment-message");
-    if (environmentMessageEl) {
-        environmentMessageEl.innerText = data.message;
-    }
-
     // 날씨
     document.getElementById("weather").innerText =
-        data.weather.weather_text +
+        `[날씨] ${data.weather.weather_text}` +
         (data.weather.temperature !== null ? " / " + data.weather.temperature + "°C" : "");
 
     // 공기질
     const airEl = document.getElementById("air-quality");
+
     airEl.innerText =
-        data.air_quality.air_text +
-        (data.air_quality.us_aqi !== null ? " / AQI " + data.air_quality.us_aqi : "");
+        `[공기질] ${data.air_quality.air_text}` +
+        (data.air_quality.us_aqi !== null ? ` / AQI ${data.air_quality.us_aqi}` : "");
 
     // AQI 강조 클래스 초기화 후 재적용
     airEl.classList.remove("aqi-bad");

@@ -118,7 +118,7 @@ body {
     grid-area: right;
     min-width: 0;
     display: grid;
-    gap: 24px;
+    gap: 14px;
     align-content: start;
 }
 
