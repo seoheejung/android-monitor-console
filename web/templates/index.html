@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Android Monitor Console</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
     <div class="monitor-console">
@@ -19,6 +19,7 @@
         </header>
 
         <main class="dex-main">
+            <!-- 좌측 상단: 메인 상태 화면 -->
             <section class="display-panel">
                 <div class="screen-frame">
                     <div class="screen-inner">
@@ -30,23 +31,16 @@
                 </div>
             </section>
 
-            <section class="mobile-cards">
-                <section class="card primary-card name-card">
-                    <div class="card-label">콘솔</div>
+            <!-- 우측 카드 영역 -->
+            <section class="right-column">
+                <section class="card primary-card os-card">
+                    <div class="card-label">시스템</div>
                     <div id="os-info" class="console-name"></div>
                 </section>
 
                 <section class="card primary-card state-card">
                     <div class="card-label">상태</div>
                     <div id="state" class="state-text"></div>
-                    <div id="message" class="card-message"></div>
-                </section>
-
-                <section class="card primary-card environment-card">
-                    <div class="card-label">환경</div>
-                    <div id="weather" class="environment-line"></div>
-                    <div id="air-quality" class="environment-line"></div>
-                    <div id="environment-message" class="card-message"></div>
                 </section>
 
                 <section class="info-grid-mobile">
@@ -71,17 +65,25 @@
                     </div>
                 </section>
 
+                <section class="card primary-card environment-card">
+                    <div class="card-label">환경</div>
+                    <div id="weather" class="environment-line"></div>
+                    <div id="air-quality" class="environment-line"></div>
+                    <div id="environment-message" class="card-message"></div>
+                </section>
+
                 <section class="info-card location-card">
                     <div class="card-label">위치</div>
                     <div id="location" class="info-value"></div>
                 </section>
             </section>
-        </main>
 
-        <section class="log-panel">
-            <div class="log-header">EVENT LOG</div>
-            <ul id="event-log"></ul>
-        </section>
+            <!-- 좌측 하단: 이벤트 로그 -->
+            <section class="log-panel">
+                <div class="log-header">EVENT LOG</div>
+                <ul id="event-log"></ul>
+            </section>
+        </main>
     </div>
 
     <script src="/static/js/app.js"></script>

@@ -5,22 +5,22 @@ def build_state_message(battery: int, charging: bool, idle_minutes: int) -> tupl
 
     # 배터리 경고 상태 (최우선)
     if battery <= 20:
-        return "warning", f"배터리 잔량이 {battery}%입니다."
+        return "warning", f"배터리 잔량 {battery}%"
 
     # 충전 중
     if charging:
-        return "healing", "충전 중입니다."
+        return "healing", "충전 중"
 
     # 장시간 미사용
     if idle_minutes >= 30:
-        return "sleep", f"{idle_minutes}분 동안 입력이 없습니다."
+        return "sleep", f"{idle_minutes}분 미사용"
 
     # 일정 시간 미사용
     if idle_minutes >= 10:
-        return "focus", "장시간 입력 없음 상태입니다."
+        return "focus", "입력 없음 상태"
 
     # 기본 상태
-    return "idle", "시스템 대기 상태입니다."
+    return "idle", "정상 상태"
 
 
 def build_environment_message(weather, air_quality) -> str:

@@ -20,21 +20,21 @@ async function fetchStatus() {
 
     // 상태 텍스트
     const stateEl = document.getElementById("state");
-    stateEl.innerText = data.profile.label;
 
-    // 기존 상태 클래스 제거 후 현재 상태 클래스 적용
-    stateEl.classList.remove(
-        "state-idle",
-        "state-sleep",
-        "state-focus",
-        "state-warning",
-        "state-healing",
-        "state-event"
-    );
-    stateEl.classList.add(`state-${data.state}`);
+    if (stateEl) {
+        // 텍스트 결합 업데이트: LABEL ( MESSAGE ) 형식
+        stateEl.innerText = `${data.profile.label} · ${data.message}`;
 
-    // 상태 메시지
-    document.getElementById("message").innerText = data.message;
+        // 기존 상태 클래스 제거 (배열 활용)
+        const stateClasses = [
+            "state-idle", "state-sleep", "state-focus", 
+            "state-warning", "state-healing", "state-event"
+        ];
+        stateEl.classList.remove(...stateClasses);
+
+        // 새로운 상태 클래스 추가
+        stateEl.classList.add(`state-${data.state}`);
+    }
 
     // 시간
     document.getElementById("time").innerText = data.time;
